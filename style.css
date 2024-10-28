@@ -6,7 +6,8 @@
 
 body {
   font-family: Arial, sans-serif;
-  background: #1e1e1e;
+  background-size: cover;
+  background-image: url('./assets/backgrounds/background1.png');
   color: #ffffff;
 }
 
@@ -19,21 +20,115 @@ body {
 
 .taskbar {
   position: absolute;
-  bottom: 10px;
+  bottom: 0;
   width: 100%;
-  text-align: center;
+  height: 60px;
   display: flex;
-  justify-content: center;
-  gap: 10px;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  padding: 0 20px;
 }
 
-.taskbar button {
-  padding: 10px;
-  border: none;
-  background-color: #3a3a3a;
-  color: white;
-  border-radius: 5px;
+.taskbar-left {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+}
+
+#weather {
+  position: relative;
+  font-size: 18px;
+  color: #ffffff;
+  cursor: pointer; /* Makes it feel clickable */
+  padding: 15px;
+  overflow: hidden; /* Ensures pseudo-element stays within bounds */
+}
+
+#weather:active::before {
+  background-color: rgba(60, 60, 60, 0.25);
+  transition: background-color 0.1s ease;
+}
+
+#weather::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(60, 60, 60, 0.3); /* Same background color as icon */
+  border-radius: 10px;
+  transform: translate(-50%, -50%) scale(0); /* Centered and scaled down */
+  transition: transform 0.07s ease-out; /* Smooth expansion */
+  transition: background-color 0.1s ease;
+  z-index: -1; /* Places it behind the text content */
+}
+
+#weather:hover::before {
+  transform: translate(-50%, -50%) scale(1); /* Scale up to full size */
+}
+
+.taskbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-icon {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   cursor: pointer;
+  width: 45px;
+  height: 45px;
+  border-radius: 5px;
+}
+
+.app-icon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(60, 60, 60, 0.4);
+  border-radius: 5px;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.1s ease-out; 
+  z-index: 0;
+}
+
+.app-icon:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.app-icon img {
+  width: 36px;
+  height: 36px;
+  position: relative;
+  padding-top: 3px;
+  z-index: 1;
+  transition: transform 0.1s ease;
+}
+
+.app-icon img:active {
+  transform: scale(0.8); /* Scale down slightly on click */
+}
+
+.indicator {
+  width: 0;
+  height: 3px;
+  background-color: #fff;
+  margin-top: 3px;
+  transition: width 0.2s;
+  border-radius: 2px;
+  z-index: 2;
 }
 
 .app-window {
@@ -48,6 +143,12 @@ body {
   cursor: move;
 }
 
-.app-window h2 {
-  margin-bottom: 10px;
+.taskbar-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#timeDate {
+  color: #ffffff;
 }

@@ -1,10 +1,16 @@
 // Apps
 function toggleApp(appId) {
   const app = document.getElementById(appId);
-  app.style.display = app.style.display === "block" ? "none" : "block";
+  const appIcon = document.getElementById(appId + 'Icon')
+  const indicator = appIcon.querySelector('.indicator');
+  const isVisible = app.style.display === 'block';
+
+  app.style.display = isVisible ? 'none' : 'block';
+  indicator.style.width = isVisible ? '0' : '50%';
+  appIcon.style.backgroundColor = isVisible ? 'rgba(100, 100, 100, 0)' : 'rgba(100, 100, 100, 0.3)';
 }
 
-// Make apps draggable
+// Dragging function for app windows
 const dragElements = document.querySelectorAll('.app-window');
 dragElements.forEach(el => {
   let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -33,7 +39,7 @@ dragElements.forEach(el => {
   }
 });
 
-// Language management with cookies
+// Language Translations
 function setLanguage(lang) {
   document.cookie = `language=${lang}; path=/`;
   updateLanguage();
@@ -55,10 +61,30 @@ function updateLanguage() {
   });
 }
 
-// Translations
 const translations = {
   en: { "About Me": "About Me", "Skills": "Skills", "Projects": "Projects", "Contact Me": "Contact Me" },
-  es: { "About Me": "Overmij", "Skills": "Vaardigheden", "Projects": "Projecten", "Contact Me": "Contact Mij" },
+  nl: { "About Me": "Over mij", "Skills": "Vaardigheden", "Projects": "Projecten", "Contact Me": "Contact Mij" },
 };
 
-window.onload = updateLanguage;
+// Background
+function changeBackground(image) {
+  document.body.style.backgroundImage = `url(${image})`;
+}
+
+// Time and Date
+function updateTime() {
+  const now = new Date();
+  const timeDateEl = document.getElementById('timeDate');
+  timeDateEl.innerText = now.toLocaleString();
+}
+setInterval(updateTime, 1000);  // Update every second
+
+// Placeholder Weather Data
+function updateWeather() {
+  // Replace this with actual API call for real data
+  document.getElementById('weatherData').innerText = "25°C, Clear";
+}
+window.onload = () => {
+  updateLanguage();
+  updateWeather();
+};

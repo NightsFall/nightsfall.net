@@ -10,21 +10,52 @@
   <!-- Desktop -->
   <div id="desktop">
     <div class="taskbar">
-      <button onclick="toggleApp('aboutApp')">About Me</button>
-      <button onclick="toggleApp('skillsApp')">Skills</button>
-      <button onclick="toggleApp('projectsApp')">Projects</button>
-      <button onclick="toggleApp('contactApp')">Contact Me</button>
-      <select id="languageSelect" onchange="setLanguage(this.value)">
-        <option value="en">English</option>
-        <option value="nl">Dutch</option>
-      </select>
+
+      <div class="taskbar-left">
+        <div id="weather">
+          <p id="weatherData">Loading weather...</p>
+        </div>
+      </div>
+
+      <div class="taskbar-center">
+        <div class="app-icon" onclick="toggleApp('about')" id="aboutIcon">
+          <img src="./assets/about.svg" alt="About Me">
+          <div class="indicator" id="aboutApp"></div>
+        </div>
+        <div class="app-icon" onclick="toggleApp('skills')" id="skillsIcon">
+          <img src="./assets/skills.svg" alt="Skills">
+          <div class="indicator" id="skillsApp"></div>
+        </div>
+        <div class="app-icon" onclick="toggleApp('projects')" id="projectsIcon">
+          <img src="./assets/projects.svg" alt="Projects">
+          <div class="indicator" id="projectsApp"></div>
+        </div>
+        <div class="app-icon" onclick="toggleApp('contact')" id="contactIcon">
+          <img src="./assets/contact.svg" alt="Contact Me">
+          <div class="indicator" id="contactApp"></div>
+        </div>
+        <div class="app-icon" onclick="toggleApp('background')" id="backgroundIcon">
+          <img src="./assets/background.svg" alt="Change Background">
+          <div class="indicator" id="backgroundApp"></div>
+        </div>
+      </div>
+
+      <div class="taskbar-right">
+        <div id="timeDate">Loading time...</div>
+      </div>
     </div>
-    
+
     <!-- Apps -->
-    <div id="aboutApp" class="app-window" data-lang="About Me">About Me</div>
-    <div id="skillsApp" class="app-window" data-lang="Skills">Skills</div>
-    <div id="projectsApp" class="app-window" data-lang="Projects">Projects</div>
-    <div id="contactApp" class="app-window" data-lang="Contact Me">Contact Me</div>
+    <div id="about" class="app-window" data-lang="About Me">About Me</div>
+    <div id="skills" class="app-window" data-lang="Skills">Skills</div>
+    <div id="projects" class="app-window" data-lang="Projects">Projects</div>
+    <div id="contact" class="app-window" data-lang="Contact Me">Contact Me</div>
+    <div id="background" class="app-window">
+      <h2>Change Background</h2>
+      <button onclick="changeBackground('background1.png')">Background 1</button>
+      <button onclick="changeBackground('background2.png')">Background 2</button>
+      <button onclick="changeBackground('background3.png')">Background 3</button>
+    </div>
   </div>
 
   <script src="script.js"></script>
