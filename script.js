@@ -10,7 +10,6 @@ function toggleApp(appId) {
   appIcon.style.backgroundColor = isVisible ? 'rgba(100, 100, 100, 0)' : 'rgba(100, 100, 100, 0.3)';
 }
 
-// Dragging function for app windows
 const dragElements = document.querySelectorAll('.app-window');
 dragElements.forEach(el => {
   let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -39,7 +38,7 @@ dragElements.forEach(el => {
   }
 });
 
-// Language Translations
+// Language Translations (wip)
 function setLanguage(lang) {
   document.cookie = `language=${lang}; path=/`;
   updateLanguage();
@@ -74,17 +73,100 @@ function changeBackground(image) {
 // Time and Date
 function updateTime() {
   const now = new Date();
-  const timeDateEl = document.getElementById('timeDate');
-  timeDateEl.innerText = now.toLocaleString();
-}
-setInterval(updateTime, 1000);  // Update every second
+  const timeDisplay = document.getElementById('timeDisplay');
+  const dateDisplay = document.getElementById('dateDisplay');
+  
+  const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const dateString = now.toLocaleDateString();
 
-// Placeholder Weather Data
-function updateWeather() {
-  // Replace this with actual API call for real data
-  document.getElementById('weatherData').innerText = "25°C, Clear";
+  timeDisplay.innerText = timeString;
+  dateDisplay.innerText = dateString;
 }
+setInterval(updateTime, 1000);
+
+// Weather
+const weatherCodeDescriptions = {
+  0: "Clear Sky",
+  1: "Mainly Clear",
+  2: "Partly Cloudy",
+  3: "Overcast",
+  45: "Fog",
+  48: "Eime Fog",
+  51: "Light Drizzle",
+  53: "Drizzle",
+  55: "Heavy Drizzle",
+  56: "Light Freezing Drizzle",
+  57: "Freezing Drizzle",
+  61: "Light Rain",
+  63: "Moderate Rain",
+  65: "Heavy Rain",
+  66: "Light Freezing Rain",
+  67: "Freezing Rain",
+  71: "Light Snowfall",
+  73: "Snowfall",
+  75: "Heavy Snowfall",
+  77: "Snow Grains",
+  80: "Light Showers",
+  81: "Showers",
+  82: "Heavy Showers",
+  85: "Light Snow Showers",
+  86: "Snow Showers",
+  95: "Thunderstorm",
+  96: "Light Thunderstorm with Hail",
+  99: "Thunderstorm with Hail"
+};
+
+async function updateWeather() {
+  try {
+    const locationResponse = await fetch('https://ipapi.co/json/');
+    const locationData = await locationResponse.json();
+    const { latitude, longitude } = locationData;
+
+    const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
+    const weatherData = await weatherResponse.json();
+
+    const temperature = `${weatherData.current_weather.temperature}${weatherData.current_weather_units.temperature}`;
+    const weatherCode = weatherData.current_weather.weathercode;
+    const condition = weatherCodeDescriptions[weatherCode] || "Unknown weather condition";
+
+    document.getElementById('temperature').innerText = temperature;
+    document.getElementById('condition').innerText = condition;
+
+    const weatherIcon = document.getElementById('weatherIcon');
+    weatherIcon.src = `./assets/weather/${weatherCode}.png`;
+    weatherIcon.alt = condition;
+  } catch (error) {
+    console.error("Error fetching weather data:", error);
+    document.getElementById('temperature').innerText = "N/A";
+    document.getElementById('condition').innerText = "Unable to retrieve weather data";
+  }
+}
+
+
+function toggleWeather() {
+  const weatherPopup = document.getElementById("weatherPopup");
+  const weatherIcon = document.getElementById("weatherIcon");
+  const popupTemperature = document.getElementById("popupTemperature");
+  const popupCondition = document.getElementById("popupCondition");
+
+  if (weatherPopup.classList.contains("show")) {
+    weatherPopup.classList.remove("show");
+  } else {
+    popupTemperature.innerText = document.getElementById("temperature").innerText;
+    popupCondition.innerText = document.getElementById("condition").innerText;
+    weatherPopup.classList.add("show");
+  }
+
+  weatherIcon.classList.remove("jump-animation");
+  void weatherIcon.offsetWidth; 
+  weatherIcon.classList.add("jump-animation");
+}
+
+
+
+
 window.onload = () => {
   updateLanguage();
   updateWeather();
+  updateTime();
 };

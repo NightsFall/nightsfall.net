@@ -38,35 +38,107 @@ body {
 
 #weather {
   position: relative;
-  font-size: 18px;
-  color: #ffffff;
-  cursor: pointer; /* Makes it feel clickable */
-  padding: 15px;
-  overflow: hidden; /* Ensures pseudo-element stays within bounds */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow: hidden;
 }
 
-#weather:active::before {
-  background-color: rgba(60, 60, 60, 0.25);
-  transition: background-color 0.1s ease;
+#weatherText {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+#temperature {
+  font-size: 14px;
+  color: #ffffff;
+}
+
+#condition {
+  font-size: 12px;
+  color: #d6d6d6;
+}
+
+#temperature,
+#condition {
+  line-height: 1.2;
 }
 
 #weather::before {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(60, 60, 60, 0.3); /* Same background color as icon */
-  border-radius: 10px;
-  transform: translate(-50%, -50%) scale(0); /* Centered and scaled down */
-  transition: transform 0.07s ease-out; /* Smooth expansion */
-  transition: background-color 0.1s ease;
-  z-index: -1; /* Places it behind the text content */
+  background-color: rgba(60, 60, 60, 0.4);
+  border-radius: 5px;
+  transform: scale(0);
+  transition: transform 0.1s ease;
+  z-index: 0;
 }
 
 #weather:hover::before {
-  transform: translate(-50%, -50%) scale(1); /* Scale up to full size */
+  transform: scale(1);
+}
+
+#weatherText {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(5px) scale(0.8);
+  }
+  75% {
+    transform: translateY(-3px) scale(1.1);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+#weatherIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  z-index: 1;
+  transition: transform 0.1s ease;
+}
+
+.weather-popup {
+  position: absolute;
+  bottom: 0;
+  left: 20px;
+  width: 200px;
+  padding: 10px;
+  background-color: rgba(40, 40, 40, 0.9);
+  border: 1px solid #555;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.1s ease, transform 0.3s ease;
+  z-index: -10;
+}
+
+.weather-popup.show {
+  opacity: 1;
+  transform: translateY(-65px);
+}
+
+.jump-animation {
+  animation: jump 0.5s ease;
 }
 
 .taskbar-center {
@@ -112,20 +184,20 @@ body {
   width: 36px;
   height: 36px;
   position: relative;
-  padding-top: 3px;
+  padding-top: 5px;
   z-index: 1;
   transition: transform 0.1s ease;
 }
 
 .app-icon img:active {
-  transform: scale(0.8); /* Scale down slightly on click */
+  transform: scale(0.8);
 }
 
 .indicator {
   width: 0;
   height: 3px;
   background-color: #fff;
-  margin-top: 3px;
+  margin-top: 2px;
   transition: width 0.2s;
   border-radius: 2px;
   z-index: 2;
@@ -151,4 +223,13 @@ body {
 
 #timeDate {
   color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 14px;
 }
+
+#timeDisplay, #dateDisplay {
+  line-height: 1.2;
+}
+

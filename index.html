@@ -12,8 +12,17 @@
     <div class="taskbar">
 
       <div class="taskbar-left">
-        <div id="weather">
-          <p id="weatherData">Loading weather...</p>
+        <div id="weather" onclick="toggleWeather()">
+          <img id="weatherIcon" alt="Weather Icon" />
+          <div id="weatherText">
+            <div id="temperature">Loading temperature...</div>
+            <div id="condition">Loading condition...</div>
+          </div>
+        </div>
+
+        <div id="weatherPopup" class="weather-popup">
+          <p><strong>Temperature:</strong> <span id="popupTemperature">Loading...</span></p>
+          <p><strong>Condition:</strong> <span id="popupCondition">Loading...</span></p>
         </div>
       </div>
 
@@ -41,7 +50,10 @@
       </div>
 
       <div class="taskbar-right">
-        <div id="timeDate">Loading time...</div>
+        <div id="timeDate">
+          <div id="timeDisplay"></div>
+          <div id="dateDisplay"></div>
+        </div>
       </div>
     </div>
 
