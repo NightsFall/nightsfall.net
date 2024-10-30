@@ -116,18 +116,36 @@ const weatherCodeDescriptions = {
   99: "Thunderstorm with Hail"
 };
 
+let weatherLastUpdated;
+let temperature;
+let apparentTemperature;
+let weatherCode;
+let condition;
+let precipitation;
+let humidity;
+let cloudCover;
+let city;
+
 async function updateWeather() {
   try {
     const locationResponse = await fetch('https://ipapi.co/json/');
     const locationData = await locationResponse.json();
     const { latitude, longitude } = locationData;
+    city = locationData.city;
 
-    const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
+    const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m&timezone=auto`);
     const weatherData = await weatherResponse.json();
 
-    const temperature = `${weatherData.current_weather.temperature}${weatherData.current_weather_units.temperature}`;
-    const weatherCode = weatherData.current_weather.weathercode;
-    const condition = weatherCodeDescriptions[weatherCode] || "Unknown weather condition";
+    console.log(weatherData)
+
+    weatherLastUpdated = weatherData.current.time.split('T')[1];
+    temperature = `${weatherData.current.temperature_2m}${weatherData.current_units.temperature_2m}`;
+    apparentTemperature = `${weatherData.current.apparent_temperature}${weatherData.current_units.apparent_temperature}`;
+    weatherCode = weatherData.current.weather_code;
+    condition = weatherCodeDescriptions[weatherCode] || "Unknown weather condition";
+    precipitation = `${weatherData.current.precipitation}${weatherData.current_units.precipitation}`;
+    humidity = `${weatherData.current.relative_humidity_2m}${weatherData.current_units.relative_humidity_2m}`;
+    cloudCover = `${weatherData.current.cloud_cover}${weatherData.current_units.cloud_cover}`;
 
     document.getElementById('temperature').innerText = temperature;
     document.getElementById('condition').innerText = condition;
@@ -142,18 +160,24 @@ async function updateWeather() {
   }
 }
 
-
 function toggleWeather() {
   const weatherPopup = document.getElementById("weatherPopup");
   const weatherIcon = document.getElementById("weatherIcon");
-  const popupTemperature = document.getElementById("popupTemperature");
-  const popupCondition = document.getElementById("popupCondition");
+  const popupWeatherIcon = document.getElementById("popupWeatherIcon");
 
   if (weatherPopup.classList.contains("show")) {
     weatherPopup.classList.remove("show");
   } else {
-    popupTemperature.innerText = document.getElementById("temperature").innerText;
-    popupCondition.innerText = document.getElementById("condition").innerText;
+    document.getElementById("popupLocation").innerText = city;
+    document.getElementById("popupTemperature").innerText = temperature;
+    document.getElementById("popupApparentTemperature").innerText = `feels like ${apparentTemperature}`;
+    popupWeatherIcon.src = `./assets/weather/${weatherCode}.png`;
+    popupWeatherIcon.alt = condition;
+    document.getElementById("popupCondition").innerText = condition;
+    document.getElementById("popupPrecipitation").innerText = precipitation;
+    document.getElementById("popupHumidity").innerText = humidity;
+    document.getElementById("popupCloudCover").innerText = cloudCover;
+    document.getElementById("popupLastUpdated").innerText = `Updated: ${weatherLastUpdated}`;
     weatherPopup.classList.add("show");
   }
 
@@ -163,7 +187,17 @@ function toggleWeather() {
 }
 
 
+function closeWeatherPopup() {
+  if (weatherPopup.classList.contains("show")) {
+    weatherPopup.classList.remove("show");
+  }
+}
 
+document.addEventListener("click", function(event) {
+  if (!weatherPopup.contains(event.target) && !event.target.closest("#weather")) {
+    closeWeatherPopup();
+  }
+});
 
 window.onload = () => {
   updateLanguage();

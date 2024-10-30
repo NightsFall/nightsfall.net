@@ -13,19 +13,45 @@
 
       <div class="taskbar-left">
         <div id="weather" onclick="toggleWeather()">
-          <img id="weatherIcon" alt="Weather Icon" />
+          <img id="weatherIcon" alt="Weather Icon" src="./assets/weather/0.png"/>
           <div id="weatherText">
-            <div id="temperature">Loading temperature...</div>
-            <div id="condition">Loading condition...</div>
+            <div id="temperature">0°C</div>
+            <div id="condition">Clear Sky</div>
           </div>
         </div>
 
-        <div id="weatherPopup" class="weather-popup">
-          <p><strong>Temperature:</strong> <span id="popupTemperature">Loading...</span></p>
-          <p><strong>Condition:</strong> <span id="popupCondition">Loading...</span></p>
+        <div class="weather-popup" id="weatherPopup">
+          <div class="popup-top">
+            <div class="popup-left">
+              <strong id="popupLocation">Loading location...</strong>
+              <div id="popupTemperature">0°C</div>
+              <div id="popupApparentTemperature">0°C</div>
+            </div>
+            <div class="popup-right">
+              <img id="popupWeatherIcon" alt="Popup Weather Icon" src="./assets/weather/0.png"/>
+              <strong id="popupCondition">Clear</strong>
+            </div>
+          </div>
+          <div class="popup-middle">
+            <div class="popup-field">
+              <strong><h id="popupPrecipitation">0mm</h></strong>
+              <p>Precipitation</p>
+            </div>
+            <div class="popup-field">
+              <strong><h id="popupHumidity">0%</h></strong>
+              <p>Humidity</p>
+            </div>
+            <div class="popup-field">
+              <strong><h id="popupCloudCover">0%</h></strong>
+              <p>Cloud Cover</p>
+            </div>
+          </div>
+          <div class="popup-bottom">
+            <p id="popupLastUpdated">Updated: 00:00</p>
+            <p>Source: <a target="_blank" href="https://open-meteo.com/">open-meteo</a></p>
+          </div>
         </div>
       </div>
-
       <div class="taskbar-center">
         <div class="app-icon" onclick="toggleApp('about')" id="aboutIcon">
           <img src="./assets/about.svg" alt="About Me">
