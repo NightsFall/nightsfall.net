@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NightsFall</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&amp;display=swap">
 </head>
 <body>
   <!-- Desktop -->
@@ -84,7 +85,19 @@
     </div>
 
     <!-- Apps -->
-    <div id="about" class="app-window" data-lang="About Me">About Me</div>
+    <div id="about" class="app-window">
+      <div id="aboutHeader" class="app-header">
+        <span>About Me</span>
+        <button class="close-btn" onclick="toggleApp('about')">X</button>
+      </div>
+      <div class="app-content">
+        <div class="title">
+          <h1>Hey! I'm <span class="gradient-text">NightsFall</span>.</h1>
+          <img src="./assets/profile.gif">
+        </div>
+        <p>Welcome! This is the About Me section. Here, you’ll learn more about my background, interests, and experiences.</p>
+      </div>
+    </div>
     <div id="skills" class="app-window" data-lang="Skills">Skills</div>
     <div id="projects" class="app-window" data-lang="Projects">Projects</div>
     <div id="contact" class="app-window" data-lang="Contact Me">Contact Me</div>

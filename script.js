@@ -1,26 +1,64 @@
 // Apps
 function toggleApp(appId) {
-  const app = document.getElementById(appId);
-  const appIcon = document.getElementById(appId + 'Icon')
+  const appWindow = document.getElementById(appId);
+  const appIcon = document.getElementById(appId + 'Icon');
   const indicator = appIcon.querySelector('.indicator');
-  const isVisible = app.style.display === 'block';
+  
+  // Check if the app window is currently visible
+  const isVisible = appWindow.classList.contains("active");
 
-  app.style.display = isVisible ? 'none' : 'block';
-  indicator.style.width = isVisible ? '0' : '50%';
-  appIcon.style.backgroundColor = isVisible ? 'rgba(100, 100, 100, 0)' : 'rgba(100, 100, 100, 0.3)';
+  if (isVisible) {
+    // Hide the app window
+    appWindow.classList.remove("active");
+    // Delay setting display to 'none' until the animation completes
+    setTimeout(() => {
+      appWindow.style.display = "none";
+    }, 300); // Match the duration of the CSS transition
+
+    // Update app icon state
+    indicator.style.width = '0'; // Hide indicator
+    appIcon.style.backgroundColor = 'transparent'; // Reset background color
+  } else {
+    // Show the app window
+    appWindow.style.display = "block";
+    // Small timeout to allow display block to register before the animation
+    setTimeout(() => {
+      appWindow.classList.add("active");
+    }, 10);
+    
+    // Update app icon state
+    indicator.style.width = '50%'; // Show indicator
+    appIcon.style.backgroundColor = 'rgba(35, 35, 35, 0.3)'; // Set background color
+  }
+}
+
+
+var PADDING = 8;
+
+var rect;
+var viewport = {
+  bottom: 0,
+  left: 0,
+  right: 0,
+  top: 0
 }
 
 const dragElements = document.querySelectorAll('.app-window');
-dragElements.forEach(el => {
+dragElements.forEach(elmnt => {
+  const header = elmnt.querySelector('.app-header');
   let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-  el.onmousedown = (e) => {
+  if (header) {
+    header.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
     e = e || window.event;
     pos3 = e.clientX;
     pos4 = e.clientY;
     document.onmouseup = closeDragElement;
     document.onmousemove = elementDrag;
-  };
+  }
 
   function elementDrag(e) {
     e = e || window.event;
@@ -28,8 +66,16 @@ dragElements.forEach(el => {
     pos2 = pos4 - e.clientY;
     pos3 = e.clientX;
     pos4 = e.clientY;
-    el.style.top = (el.offsetTop - pos2) + "px";
-    el.style.left = (el.offsetLeft - pos1) + "px";
+    
+    const newTop = elmnt.offsetTop - pos2;
+    const newLeft = elmnt.offsetLeft - pos1;
+
+    if (newTop >= PADDING && newTop + elmnt.offsetHeight <= window.innerHeight - PADDING) {
+      elmnt.style.top = newTop + "px";
+    }
+    if (newLeft >= PADDING && newLeft + elmnt.offsetWidth <= window.innerWidth - PADDING) {
+      elmnt.style.left = newLeft + "px";
+    }
   }
 
   function closeDragElement() {
@@ -37,33 +83,6 @@ dragElements.forEach(el => {
     document.onmousemove = null;
   }
 });
-
-// Language Translations (wip)
-function setLanguage(lang) {
-  document.cookie = `language=${lang}; path=/`;
-  updateLanguage();
-}
-
-function getLanguage() {
-  const cookieArr = document.cookie.split("; ");
-  const langCookie = cookieArr.find(row => row.startsWith("language="));
-  return langCookie ? langCookie.split("=")[1] : "en";
-}
-
-function updateLanguage() {
-  const lang = getLanguage();
-  const elements = document.querySelectorAll('.app-window');
-
-  elements.forEach(el => {
-    const key = el.getAttribute("data-lang");
-    el.innerText = translations[lang][key];
-  });
-}
-
-const translations = {
-  en: { "About Me": "About Me", "Skills": "Skills", "Projects": "Projects", "Contact Me": "Contact Me" },
-  nl: { "About Me": "Over mij", "Skills": "Vaardigheden", "Projects": "Projecten", "Contact Me": "Contact Mij" },
-};
 
 // Background
 function changeBackground(image) {
@@ -200,7 +219,6 @@ document.addEventListener("click", function(event) {
 });
 
 window.onload = () => {
-  updateLanguage();
   updateWeather();
   updateTime();
 };
