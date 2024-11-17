@@ -28,10 +28,27 @@ function toggleApp(appId) {
     
     // Update app icon state
     indicator.style.width = '50%'; // Show indicator
-    appIcon.style.backgroundColor = 'rgba(35, 35, 35, 0.3)'; // Set background color
+    appIcon.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'; // Set background color
   }
 }
 
+document.querySelectorAll('.skill').forEach(skill => {
+  skill.addEventListener('mouseover', () => {
+    const progressBar = skill.querySelector('.progress-bar');
+    const progress = skill.querySelector('.progress');
+    const targetWidth = progressBar.getAttribute('data-progress') + '%';
+    
+    // Apply fill animation with JavaScript
+    progress.style.transition = 'width 1s ease'; // Smooth animation
+    progress.style.width = targetWidth;
+  });
+
+  skill.addEventListener('mouseout', () => {
+    const progress = skill.querySelector('.progress');
+    // Reset width to 0 on mouse out
+    progress.style.width = '0%';
+  });
+});
 
 var PADDING = 8;
 
