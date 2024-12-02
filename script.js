@@ -4,31 +4,24 @@ function toggleApp(appId) {
   const appIcon = document.getElementById(appId + 'Icon');
   const indicator = appIcon.querySelector('.indicator');
   
-  // Check if the app window is currently visible
   const isVisible = appWindow.classList.contains("active");
 
   if (isVisible) {
-    // Hide the app window
     appWindow.classList.remove("active");
-    // Delay setting display to 'none' until the animation completes
     setTimeout(() => {
       appWindow.style.display = "none";
-    }, 300); // Match the duration of the CSS transition
+    }, 300);
 
-    // Update app icon state
-    indicator.style.width = '0'; // Hide indicator
-    appIcon.style.backgroundColor = 'transparent'; // Reset background color
+    indicator.style.width = '0';
+    appIcon.style.backgroundColor = 'transparent';
   } else {
-    // Show the app window
     appWindow.style.display = "block";
-    // Small timeout to allow display block to register before the animation
     setTimeout(() => {
       appWindow.classList.add("active");
     }, 10);
     
-    // Update app icon state
-    indicator.style.width = '50%'; // Show indicator
-    appIcon.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'; // Set background color
+    indicator.style.width = '50%';
+    appIcon.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
   }
 }
 
@@ -38,14 +31,12 @@ document.querySelectorAll('.skill').forEach(skill => {
     const progress = skill.querySelector('.progress');
     const targetWidth = progressBar.getAttribute('data-progress') + '%';
     
-    // Apply fill animation with JavaScript
-    progress.style.transition = 'width 1s ease'; // Smooth animation
+    progress.style.transition = 'width 1s ease';
     progress.style.width = targetWidth;
   });
 
   skill.addEventListener('mouseout', () => {
     const progress = skill.querySelector('.progress');
-    // Reset width to 0 on mouse out
     progress.style.width = '0%';
   });
 });

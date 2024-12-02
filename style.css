@@ -197,7 +197,7 @@ body {
 }
 
 #popupWeatherIcon {
-  width: 54px; /* Adjust the size as needed */
+  width: 54px;
   height: 54px;
 }
 
@@ -406,29 +406,22 @@ body {
   background: rgba(255, 255, 255, 0.1);
   border-radius: 5px;
   overflow: hidden;
-  display: none; /* Hidden by default */
+  transition: opacity 0.3s ease-in;
 }
 
 .skill:hover .progress-bar {
-  display: block; /* Show on hover */
-  animation: revealProgressBar 0.5s ease forwards;
+  opacity: 1; /* Show on hover */
 }
 
-@keyframes revealProgressBar {
-  from {
-    transform: scaleY(0);
-    transform-origin: top;
-  }
-  to {
-    transform: scaleY(1);
-  }
+.skill:not(:hover) .progress-bar {
+  opacity: 0; /* Show on hover */
 }
 
 .progress {
   height: 100%;
   background: linear-gradient(90deg, #4caf50, #81c784);
   border-radius: 5px;
-  width: 0%; /* Start with 0% width */
+  width: 0%;
 }
 /* Skills App Styling */
 
