@@ -385,8 +385,6 @@ body {
   margin: 0 10px 0 10px;
 }
 
-
-
 .skill-icon {
   width: 24px;
   height: 24px;
@@ -410,11 +408,11 @@ body {
 }
 
 .skill:hover .progress-bar {
-  opacity: 1; /* Show on hover */
+  opacity: 1;
 }
 
 .skill:not(:hover) .progress-bar {
-  opacity: 0; /* Show on hover */
+  opacity: 0;
 }
 
 .progress {
@@ -424,6 +422,36 @@ body {
   width: 0%;
 }
 /* Skills App Styling */
+
+/* Projects App Styling */
+#projects {
+  width: 500px;
+  height: 500px;
+}
+
+#projects .title {
+  display: flex;
+  padding-bottom: 30px;
+  flex-direction: row;
+  align-items: center;
+}
+
+#projects .title img {
+  border-radius: 100%;
+  width: 64px;
+  margin-left: 50px;
+  box-shadow: 0 0 50px 0px rgba(0, 0, 0, 0.7);
+}
+
+#projects .app-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  color: white;
+  font-size: 14px;
+}
+/* Projects App Styling */
 
 .taskbar-right {
   display: flex;
